@@ -1,0 +1,14 @@
+cd OneDrive
+cd Desktop
+cd SWP_Git
+
+git status
+
+git add ...
+
+git status
+
+git commit -m "...:..."
+
+
+
