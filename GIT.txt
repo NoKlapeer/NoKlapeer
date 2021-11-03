@@ -10,5 +10,7 @@ git status
 
 git commit -m "...:..."
 
+git pish origin master
+
 
 
