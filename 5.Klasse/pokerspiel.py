@@ -1,10 +1,12 @@
-from asyncio.windows_events import NULL
 import random
 
 mlist = []
 hand = []
 
 def ziehung(anz=5):
+    global mlist, hand
+    mlist = []
+    hand = []
     for i in range(0, 52):
         mlist.append(i)
     for j in range(anz):
@@ -47,7 +49,7 @@ def getnummer(zahl):
     return zahl % 13
 
 def getsymbol(zahl):
-    return zahl // 13
+    return int(zahl) // 13
 
 def gethandr(hand):
     handr = []
@@ -136,10 +138,10 @@ def royal_flush(hand):
     #print(symr)
     counter = 0
     handr.sort()
-    for i in range(1,5):
+    for i in range(2,5):
         if((handr[0] == 0) and (handr[1] == 9) and ((handr[i] - handr[i-1])==1) and ((symr[i] - symr[i-1])==0)):
             counter += 1
-    if(counter >=3):
+    if(counter ==3):
         return True
     return False
 
@@ -185,16 +187,15 @@ def twopair(hand):
         return True
     return False
 
-dic1 = {'rflush' : 0, 'sflush' : 0, '4' : 0, 'fhouse' : 0, 'flush' : 0, 'straight' : 0, '3' : 0, '2pair' : 0, 'pair' : 0, 'hcard' : 0}
+dic1 = {'Royal Flush' : 0, 'Straight Flush' : 0, 'Vierling' : 0, 'Full House' : 0, 'Flush' : 0, 'Straight' : 0, 'Drilling' : 0, 'Two Pair' : 0, 'Pair' : 0, 'High Card' : 0}
 dic = {}
+komb = ['Royal Flush', 'Straight Flush', 'Vierling', 'Full House', 'Flush', 'Straight', 'Drilling', 'Two Pair', 'Pair', 'High Card']
 
 def createdic(min, max):
     for i in range(min, max+1):
         dic[i] = 0
 
-def kombinationen(hand, anz):
-    #for j in range(anz):
-        #ziehung()
+def kombinationen(hand):
         for i in range(0,5):
             if royal_flush(hand):
                 dic[0] += 1
@@ -229,14 +230,21 @@ def kombinationen(hand, anz):
 def kalkulation(anz):
     for j in range(anz):
         ziehung()
-        kombinationen(hand)
+        kombinationen(hand)       
     return dic
+
+def kalkundausgabe(dic, komb, anz):
+    ausgabe = 0
+    for i in range(0, 10):
+        
+        print(komb[i] + " : " + str(round((dic[i]/anz)*100, 4)) + "%")
+    return ausgabe
     
 
 
 if __name__ == '__main__':
-    print(ziehung())
     createdic(0,9)
+    #print(ziehung())
     #print(pair(hand))
     #print(drilling(hand))
     #print(straight(hand))
@@ -246,6 +254,7 @@ if __name__ == '__main__':
     #print(full_house(hand))
     #print(twopair(hand))
     #print(vierling(hand))
-    print(kombinationen(hand, 100000))
-    #kalkulation(100000)
-    #print(dic)
+    #print(kombinationen(hand, 100000))
+    kalkulation(100000)
+    print(dic)
+    kalkundausgabe(dic, komb, 100000)
