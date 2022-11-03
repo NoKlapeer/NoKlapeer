@@ -96,7 +96,7 @@ def vierling(hand):
     dup.append("fill")
     counter = 0
     #print(dup)
-    for j in range (0,5):
+    for j in range (len(hand)):
         if((len(dup) == 4)):
             if(dup[0] == handr[j]):
                 counter += 1
@@ -110,7 +110,7 @@ def straight(hand):
     #print(handr)
     counter = 0
     handr.sort()
-    for i in range(0,5):
+    for i in range(len(hand)):
         if((handr[i] - handr[i-1])==1):
             counter += 1
     if(counter >=4):
@@ -124,10 +124,13 @@ def straight_flush(hand):
     #print(symr)
     counter = 0
     handr.sort()
-    for i in range(0,5):
-        if(((handr[i] - handr[i-1])==1) and ((symr[i] - symr[i-1])==0)):
+    for j in range(len(hand)):
+        if((symr[j] - symr[j-1])!=0):
+            return False
+    for i in range(len(hand)):
+        if(((handr[i] - handr[i-1])==1)):
             counter += 1
-    if(counter >=4):
+    if(counter ==4):
         return True
     return False
 
@@ -138,10 +141,13 @@ def royal_flush(hand):
     #print(symr)
     counter = 0
     handr.sort()
+    for j in range(len(hand)):
+        if((symr[j] - symr[j-1])!=0):
+            return False
     for i in range(2,5):
-        if((handr[0] == 0) and (handr[1] == 9) and ((handr[i] - handr[i-1])==1) and ((symr[i] - symr[i-1])==0)):
-            counter += 1
-    if(counter ==3):
+            if((handr[0] == 0) and (handr[1] == 9) and ((handr[i] - handr[i-1])==1)):
+                counter += 1
+    if(counter == 3):
         return True
     return False
 
@@ -149,7 +155,7 @@ def flush(hand):
     symr = getsymr(hand)
     #print(symr)
     counter = 0
-    for i in range(0,5):
+    for i in range(len(hand)):
         if((symr[i] - symr[i-1])==0):
             counter += 1
     if(counter >=4):
@@ -169,12 +175,8 @@ def full_house(hand):
     #if(counter == 4):
         #return True
     #return False
-    if(drilling(handr[0:3])):
-        if(pair(handr[3:5])):
-            return True
-    if(pair(handr[0:2])):
-        if(drilling(handr[2:5])):
-            return True
+    if((drilling(handr[0:3]) and pair(handr[3:5])) or(pair(handr[0:2]) and drilling(handr[2:5]))):
+        return True
     return False   
 
 def twopair(hand):
@@ -196,7 +198,7 @@ def createdic(min, max):
         dic[i] = 0
 
 def kombinationen(hand):
-        for i in range(0,5):
+        for i in range(len(hand)):
             if royal_flush(hand):
                 dic[0] += 1
                 return 'Royal flush'
@@ -237,7 +239,7 @@ def kalkundausgabe(dic, komb, anz):
     ausgabe = 0
     for i in range(0, 10):
         
-        print(komb[i] + " : " + str(round((dic[i]/anz)*100, 4)) + "%")
+        print(komb[i] + " : " + str(round((dic[i]/anz)*100, 5)) + "%")
     return ausgabe
     
 
