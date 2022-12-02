@@ -241,10 +241,8 @@ def kalkundausgabe(dic, komb, anz):
         
         print(komb[i] + " : " + str(round((dic[i]/anz)*100, 5)) + "%")
     return ausgabe
-    
 
-
-if __name__ == '__main__':
+def main():
     createdic(0,9)
     #print(ziehung())
     #print(pair(hand))
@@ -257,6 +255,10 @@ if __name__ == '__main__':
     #print(twopair(hand))
     #print(vierling(hand))
     #print(kombinationen(hand, 100000))
-    kalkulation(100000)
+    kalkulation(1000000)
     print(dic)
-    kalkundausgabe(dic, komb, 100000)
+    kalkundausgabe(dic, komb, 1000000)
+
+
+if __name__ == '__main__':
+    main()
