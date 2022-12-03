@@ -66,7 +66,7 @@ class Firma:
             if(j.geschlecht == "m"):
                 mann+=1
             else: frau+=1
-        return "Maenner:", mann/anzMitA, "Frauen:", frau/anzMitA
+        return "Maenner:", mann * 100//anzMitA, "Frauen:", frau * 100 //anzMitA
 
 wi = Abteilung("Wirtschaft", 1)
 mas = Abteilung("Maschinenbau", 2)
@@ -86,4 +86,4 @@ print("Anzahl der Mitarbeiter:", firma.anz_mitarbeiter())
 print("Anzahl der Gruppenleiter:",firma.anz_gruppenleiter())
 print("Anzahl der Abteilungen:",firma.anz_abteilungen())
 print("Abteilung mit groesster Mitarbeiterstärke:", firma.mitarbeiterstärke())
-print("Prozentanteil Männer und Frauen:", firma.proz_fraumann())
+print("Prozentanteil Männer und Frauen (in %):", firma.proz_fraumann())
