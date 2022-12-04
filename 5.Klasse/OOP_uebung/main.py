@@ -43,7 +43,7 @@ class Firma:
             anzahl+=1
         return anzahl
     
-    def mitarbeiterstärke(self):
+    def mitarbeiterstaerke(self):
         anzMAdavor = 0
         groesste = 0
         for i in self.abteilungen:
@@ -85,5 +85,5 @@ firma.abteilungen.append(mas)
 print("Anzahl der Mitarbeiter:", firma.anz_mitarbeiter())
 print("Anzahl der Gruppenleiter:",firma.anz_gruppenleiter())
 print("Anzahl der Abteilungen:",firma.anz_abteilungen())
-print("Abteilung mit groesster Mitarbeiterstärke:", firma.mitarbeiterstärke())
-print("Prozentanteil Männer und Frauen (in %):", firma.proz_fraumann())
+print("Abteilung mit groesster Mitarbeiterstaerke:", firma.mitarbeiterstaerke())
+print("Prozentanteil Maenner und Frauen (in %):", firma.proz_fraumann())
