@@ -8,7 +8,7 @@ def ziehunggescheit(min, max, wieoft):
     for i in range(min, max+1):
         lottzahlen.append(i)
     for j in range(wieoft):
-        index = random.randrange(0, max-min+1)
+        index = random.randrange(1, max-min-j)
         lastposition = len(lottzahlen)-1-j
         lottzahlen[index], lottzahlen[lastposition] = lottzahlen[lastposition], lottzahlen[index]
     return lottzahlen[-wieoft:]#alle zahlen in lottozahlen von 45-wieoft bis 45 in dem array
