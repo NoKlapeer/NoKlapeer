@@ -1,28 +1,10 @@
+import json
 import random
 
 from flask import Flask
 from numpy import record
 
-from server import getdata_from_db, reset_db, save_data, show_all_data
-
-'''ssp_db = mysql.connector.connect(       # zu Schere Stein Papier DB verbinden
-    host="localhost",
-    user="root",
-    password="",
-    database="ssp_db"
-)
-
-my_cursor = ssp_db.cursor()
-my_cursor.execute("SELECT * FROM stats")
-#print(my_cursor.fetchall().index(0))
-# einmalige Eintragung, damit danach geupdated werden kann
-if(len(my_cursor.fetchall()) < 2):
-    sqlpfirst = f'INSERT INTO stats VALUES ("player", 0, 0, 0, 0, 0, 0)'
-    sqlcfirst = f'INSERT INTO stats VALUES ("computer", 0, 0, 0, 0, 0, 0)'
-    my_cursor.execute(sqlpfirst)
-    my_cursor.execute(sqlcfirst)
-    ssp_db.commit()'''
-
+import requests
 
 
 symbol_dic = {"stein" : 1, "spock" : 2, "papier" : 3,  "echse" : 4, "schere" : 5}
@@ -92,11 +74,13 @@ def game():
         elif unterschied <= 4:
             gewinner = "Computer gewinnt!"
             compwins+=1
+        playerwins = requests.get("http://localhost:5000/", data=json.dumps({"gewählt": gewählt, "gewähltcom": gewähltcom, "playerwins": playerwins, "compwins": compwins}))
+        print(playerwins)
+        #playerwins = getdata_from_db(gewählt, gewähltcom, playerwins, compwins)[2]
+        compwins = requests.get("http://localhost:5000/", data={"gewählt": gewählt, "gewähltcom": gewähltcom, "playerwins": playerwins, "compwins": compwins})
         
-        playerwins = getdata_from_db(gewählt, gewähltcom, playerwins, compwins)[2]
-        compwins = getdata_from_db(gewählt, gewähltcom, playerwins, compwins)[3]
-        
-        save_data(count_symbol_player, count_symbol_comp, playerwins, compwins, gewählt, gewähltcom)
+        #requests.put("http://localhost:5000/", data={"count_symbol_player": count_symbol_player, "count_symbol_comp": count_symbol_comp, "playerwins": playerwins, "compwins": compwins, "gewählt": gewählt, "gewähltcom": gewähltcom})
+        #save_data(count_symbol_player, count_symbol_comp, playerwins, compwins, gewählt, gewähltcom)
         print(gewinner)
         
         print("\nSpieler:", playerwins, "Computer:", compwins)
@@ -115,10 +99,10 @@ def menu():
         todo = input("Sie können wählen zwischen /game, /resetdb, /stats oder /exit: ")
         if todo == "/game":
             game()
-        elif todo == "/resetdb":
-            reset_db()
-        elif todo == "/stats":
-            show_all_data()
+        #elif todo == "/resetdb":
+            #reset_db()
+        #elif todo == "/stats":
+            #show_all_data()
         elif todo == "/exit":
             exit = True
 

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Api, Resource
 import mysql.connector
 
@@ -78,8 +78,19 @@ api = Api(app)
 
 class ApiClass(Resource):
     def get(self):
-        data = show_all_data()
+        data = getdata_from_db(data['gewählt'], data['gewähltcom'], int(data['playerwins']), int(data['compwins']))
+        print(request.form["gewählt"])
+        #data = show_all_data()
         return data
+    
+    def put(self):
+        print(request.form["gewählt"])
+        save_data(request.form["gewählt"], request.form["sym_count_player"])
 
+class NewClass(Resource): 
+    def get(self): 
+        pass
+
+api.add_resource(NewClass, "/allData")
 api.add_resource(ApiClass, '/')
 app.run(debug = "True")
