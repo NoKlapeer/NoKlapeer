@@ -23,6 +23,7 @@ def game():
     rundencounter = 0
     gamemode = "E"
     next_round = "j"
+    
     while next_round == "j":
         rundencounter+=1
         playerwins = 0
@@ -74,16 +75,18 @@ def game():
         elif unterschied <= 4:
             gewinner = "Computer gewinnt!"
             compwins+=1
-        playerwins = requests.get("http://localhost:5000/", data=json.dumps({"gewählt": gewählt, "gewähltcom": gewähltcom, "playerwins": playerwins, "compwins": compwins}))
-        print(playerwins)
+        #playerwins = requests.get("http://localhost:5000/", data={"gewählt": gewählt, "gewähltcom": gewähltcom, "playerwins": playerwins, "compwins": compwins})
+        #print(playerwins)
         #playerwins = getdata_from_db(gewählt, gewähltcom, playerwins, compwins)[2]
-        compwins = requests.get("http://localhost:5000/", data={"gewählt": gewählt, "gewähltcom": gewähltcom, "playerwins": playerwins, "compwins": compwins})
+        #compwins = requests.get("http://localhost:5000/", data={"gewählt": gewählt, "gewähltcom": gewähltcom, "playerwins": playerwins, "compwins": compwins})
         
-        #requests.put("http://localhost:5000/", data={"count_symbol_player": count_symbol_player, "count_symbol_comp": count_symbol_comp, "playerwins": playerwins, "compwins": compwins, "gewählt": gewählt, "gewähltcom": gewähltcom})
         #save_data(count_symbol_player, count_symbol_comp, playerwins, compwins, gewählt, gewähltcom)
         print(gewinner)
         
-        print("\nSpieler:", playerwins, "Computer:", compwins)
+        #print("\nSpieler:", playerwins, "Computer:", compwins)
+
+        requests.post("http://localhost:5000/", data=json.dumps({"count_symbol_player": count_symbol_player, "count_symbol_comp": count_symbol_comp, "playerwins": (playerwins/2), "compwins": (compwins/2), "gewählt": gewählt, "gewähltcom": gewähltcom}))
+
         
         next_round = input("\nNoch eine Runde?(j/n)")
         if next_round == "n":
@@ -99,10 +102,16 @@ def menu():
         todo = input("Sie können wählen zwischen /game, /resetdb, /stats oder /exit: ")
         if todo == "/game":
             game()
-        #elif todo == "/resetdb":
-            #reset_db()
-        #elif todo == "/stats":
-            #show_all_data()
+        elif todo == "/resetdb":
+            requests.put("http://localhost:5000/", data=json.dumps({"reset" : 1}))
+        elif todo == "/stats":
+            data = requests.get("http://localhost:5000/").content
+            json_data = json.loads(data)
+            # Print the data in a tabular format
+            print("Name\tStein\tSpock\tPapier\tEchse\tSchere\tWins")
+            print(json_data["name"] + "\t" + str(json_data["stein"]) + "\t" + str(json_data["spock"]) + 
+            "\t" + str(json_data["papier"]) + "\t" + str(json_data["echse"]) + "\t" + str(json_data["schere"]) + 
+            "\t" + str(json_data["wins"]))
         elif todo == "/exit":
             exit = True
 

@@ -1,3 +1,4 @@
+import json
 from flask import Flask, request
 from flask_restful import Api, Resource
 import mysql.connector
@@ -47,9 +48,11 @@ def save_data(sym_count_p, sym_count_c, p_wins, c_wins, gew, gewcom):
     # für die Symbole
     selectionplayer = getdata_from_db(gew, gewcom, p_wins, c_wins)[0]
     selectioncomp = getdata_from_db(gew, gewcom, p_wins, c_wins)[1]
+    playwins = getdata_from_db(gew, gewcom, p_wins, c_wins)[2]
+    compwins = getdata_from_db(gew, gewcom, p_wins, c_wins)[3]
 
-    sqlp = f'UPDATE stats SET {gew} = {selectionplayer} + {sym_count_p[gew]}, wins = {p_wins} WHERE name = "player"'
-    sqlc = f'UPDATE stats SET {gewcom} = {selectioncomp} + {sym_count_c[gewcom]}, wins = {c_wins} WHERE name = "computer"'
+    sqlp = f'UPDATE stats SET {gew} = {selectionplayer} + {sym_count_p[gew]}, wins = {playwins} + {p_wins} WHERE name = "player"'
+    sqlc = f'UPDATE stats SET {gewcom} = {selectioncomp} + {sym_count_c[gewcom]}, wins = {compwins} + {c_wins} WHERE name = "computer"'
     
     my_cursor.execute(sqlp)
     my_cursor.execute(sqlc)
@@ -78,19 +81,22 @@ api = Api(app)
 
 class ApiClass(Resource):
     def get(self):
-        data = getdata_from_db(data['gewählt'], data['gewähltcom'], int(data['playerwins']), int(data['compwins']))
-        print(request.form["gewählt"])
-        #data = show_all_data()
+        #dat = getdata_from_db(request.form['gewählt'], request.form['gewähltcom'], int(request.form['playerwins']), int(request.form['compwins']))
+        #print(request.form["gewählt"])
+        data = show_all_data()
         return data
     
+    def post(self):
+        data = request.get_json(force=True)
+        #dicplayer = json.loads(data["count_symbol_player"])
+        #diccomp = json.loads(data["count_symbol_comp"])
+        #print(dicplayer)
+        save_data(data['count_symbol_player'], data['count_symbol_comp'], data['playerwins'], data['compwins'], data['gewählt'], data['gewähltcom'])
+    
     def put(self):
-        print(request.form["gewählt"])
-        save_data(request.form["gewählt"], request.form["sym_count_player"])
+        data = request.get_json(force=True)
+        if(data['reset'] == 1):
+            reset_db()
 
-class NewClass(Resource): 
-    def get(self): 
-        pass
-
-api.add_resource(NewClass, "/allData")
 api.add_resource(ApiClass, '/')
 app.run(debug = "True")
