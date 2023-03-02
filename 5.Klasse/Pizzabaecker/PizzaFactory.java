@@ -1,7 +1,8 @@
 import Pizza.*;
 
-public class PizzaFactory {
-    public Pizza erstellePizza(String type){
+public class PizzaFactory extends Pizzeria{
+	@Override
+    protected Pizza erstellePizza(String type){
 		Pizza pizza=null;
 		if (type.equals("Salami"))
 			pizza = new SalamiPizza();
@@ -15,4 +16,4 @@ public class PizzaFactory {
 		return pizza;
 	}
 
-    }
+}
