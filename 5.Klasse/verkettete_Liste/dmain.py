@@ -23,16 +23,6 @@ class DoubleLinkedList:
             curr_node.next = new_node
             new_node.prev = curr_node
     
-    def prepend(self, data):
-        new_node = Node(data)
-        
-        if self.head is None:
-            self.head = new_node
-        else:
-            self.head.prev = new_node
-            new_node.next = self.head
-            self.head = new_node
-    
     def delete(self, data):
         if self.head is None:
             return
