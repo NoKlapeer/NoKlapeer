@@ -1,4 +1,5 @@
 import random
+import copy
 
 class ArrayList:
     def __init__(self):
@@ -8,13 +9,13 @@ class ArrayList:
 
     def add(self, element):
         self.mache_platz()
-        self.data[self.len] = element
+        print(self.len)
+        print(str(self.data))
+        self.data[self.len] = element   # mit Professor wegen append besprechen
         self.len += 1
 
     def remove(self, index):
-        for i in range(index, self.len-1):
-            self.data[i] = self.data[i+1]
-        self.data[self.len-1] = None
+        self.data.remove(index)
         self.len -= 1
 
     def __getitem__(self, index):
@@ -22,29 +23,34 @@ class ArrayList:
 
     def length(self):
         return self.len
+        # oder return len(self.data)
+
 
     def mache_platz(self):
         if self.len == self.platz:
             neuer_platz = self.platz * 2
-            neue_data = [None] * neuer_platz
-            for i in range(self.len):
-                neue_data[i] = self.data[i]
+            neue_data = copy.deepcopy(self.data)
+            for i in range(self.platz):
+                neue_data.append(None)
             self.data = neue_data
             self.platz = neuer_platz
 
     def __str__(self):
-        return str(self.data[:self.len])
+        return str(self.data)
 
 if __name__ == "__main__":
     arraylist = ArrayList()
     for i in range(10):
         arraylist.add(random.randint(1, 100))
+    print("Liste ausgeben:", arraylist)
     print("Länge von Arraylist:", arraylist.length())
+    #such_index = int(input("Gib einen Index zum Finden der Zahl ein: "))
+    print("Zahl an Index von", 4, "ist", arraylist[4])
+    entf_index = int(input("Welche Zahl soll aus der Liste gelöscht werden? "))
+    #arraylist.remove(entf_index)
+    #print("Liste ausgeben:", arraylist)
+    arraylist.add(2)
     print("Liste ausgeben:", arraylist)
-    such_index = int(input("Gib einen Index zum Finden der Zahl ein: "))
-    print("Index von", such_index, "ist", arraylist[such_index])
-    entf_index = int(input("Welcher Index soll gelöscht werden? "))
-    arraylist.remove(entf_index)
-    print("Liste ausgeben:", arraylist)
+
 
     
