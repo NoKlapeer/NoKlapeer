@@ -24,7 +24,7 @@ public class WeatherStation {
 
     public void notifyObservers() {
         for (Observer observer : observers) {
-            observer.update(temperature, humidity);
+            observer.update();
         }
     }
 

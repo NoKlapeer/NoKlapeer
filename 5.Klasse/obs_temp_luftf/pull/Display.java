@@ -12,9 +12,9 @@ class Display implements Observer {
         weatherStation.registerObserver(this);
     }
 
-    public void update(float temperature, float humidity) {
-        this.temperature = temperature;
-        this.humidity = humidity;
+    public void update() {
+        this.temperature = this.weatherStation.getTemperature();
+        this.humidity = this.weatherStation.getHumidity();
         display();
     }
 
